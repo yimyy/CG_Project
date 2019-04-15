@@ -34,6 +34,9 @@ double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
 float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f), r_angle(0);
 
+//The timer starting time
+Uint32 startTime = 0, currentTime;
+
 /*
  * DegreeToRadian
  *	Converts a specified amount of degrees to radians.
@@ -393,23 +396,11 @@ void DrawRoom()
 
 	/*Time event*/
 
-	//Quit flag
-	bool quit = false;
-
-	//The timer starting time
-	Uint32 start = 0, currentTime;
-
-	//The timer start/stop flag
-	bool running = true;
-
-	int variable = 0;
-
-
 	currentTime = SDL_GetTicks();
-	if (currentTime - start > 1000) {
+	if (currentTime - startTime > 1000) {
 //		printf("Report: %d\n", variable);
-		r_angle += 1;
-		start = currentTime;
+		r_angle += 1; 
+		startTime = currentTime;
 	}	
 
 
