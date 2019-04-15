@@ -1,4 +1,6 @@
 /* Link the libraries code-wise. */
+#include <iostream>
+
 #ifdef _MSC_VER
 #	pragma comment(lib, "OpenGL32.lib")
 #	pragma comment(lib, "GLu32.lib")
@@ -11,9 +13,15 @@
 #include <string>
 #include <cmath>
 
+//#include <GL/gl.h>
+//#include <GL/glaux.h>
+//#include <GL/glu.h>
+#include <GL/glut.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_image.h>
+
+
 
 #define PI 3.141592653589793
 
@@ -24,6 +32,8 @@ unsigned BoxList(0);					//Added!
 double X(0.0), Y(0.0), Z(0.0);
 double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
+float xsphere(-0.1f), ysphere(0.2f), dsphere(-0.5f);
+
 /*
  * DegreeToRadian
  *	Converts a specified amount of degrees to radians.
@@ -32,6 +42,79 @@ inline double DegreeToRadian(double degrees)
 {
 	return (degrees / 180.f * PI);
 }
+
+void init()
+{
+	//light source
+	/*
+	GLfloat light_position[] = { 0,50,-100,1 };
+	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
+	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
+	GLfloat specular[] = { 1,0.6,0.6,1 };
+	glLightfv(GL_LIGHT1, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT1);
+
+	glClearColor(0.3, 0.4, 0.8, 0.1);
+	glShadeModel(GL_SMOOTH);
+	*/
+
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+
+	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
+	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
+	GLfloat specular[] = { 1,0.6,0.6,1 };
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glShadeModel(GL_SMOOTH);
+
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+}
+
+void mydisplay(float x, float y, float d)
+{
+
+//	GLfloat tp_ambient[] = { 0.05,0.05,0.05,1 };
+//	GLfloat tp_diffuse[] = { 0.7,0.3,1,1 };
+//	GLfloat tp_specular[] = { 0.6,0.6,0.6,1 };
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, tp_ambient);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, tp_diffuse);
+//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, tp_specular);
+
+	glPushMatrix();
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glTranslatef(x,y,d);
+	GLUquadricObj *quadric = gluNewQuadric();
+	gluSphere(quadric, 0.1, 16, 16);
+	gluDeleteQuadric(quadric);
+	glPopMatrix();
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /*
  * GrabTexObjFromFile
@@ -122,7 +205,17 @@ void CompileLists()
 			glTexCoord2d(1, 0); glVertex3d(750, 475, -0.4);
 			glTexCoord2d(1, 1); glVertex3d(750, 475, 0.4);
 			glTexCoord2d(0, 1); glVertex3d(400, 475, 0.4);
+
+
 		glEnd();
+
+//		glLoadIdentity();
+
+
+
+
+
+
 	glEndList();
 }
 
@@ -171,6 +264,9 @@ void DrawRoom()
 
 		/* Set the coordinate system. */
 		glOrtho(0, 800, 600, 0, -1, 1);
+
+		init();
+		
 
 		/* Draw walls. */
 		glBindTexture(GL_TEXTURE_2D, Textures[0]);
@@ -262,7 +358,7 @@ void DrawRoom()
 		/* Now we're going to render some boxes using display lists. */
 		glPushMatrix();
 			/* Let's make it a bit smaller... */
-			glScaled(0.5, 0.4, 0.5);
+			glScaled(1, 0.4, 0.5);
 
 			/* Can't bind textures while generating a display list, but we can give it texture coordinates and bind it now. */
 			glBindTexture(GL_TEXTURE_2D, Textures[2]);
@@ -293,12 +389,34 @@ void DrawRoom()
 			}
 			
 		glPopMatrix();
-
+		
 	glPopMatrix();
+	mydisplay(xsphere, ysphere, dsphere);
+//	mydisplay(-0.1f, 0.2f, -0.5f);
 }
+
+/*
+bool check = true;
+
+void myMouseClick(int button, int state, int x, int y) {
+	//Left mouse && on pressed
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		using std::cout;
+		using std::endl;
+
+		check = true;
+		cout << "Mouse click detected at coordinates x="
+			<< x << " and y=" << y << endl;
+	}
+}
+*/
 
 int main(int argc, char **argv)
 {
+
+	using std::cout;
+	using std::endl;
+
 	/* Initialize SDL and set up a window. */
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -376,12 +494,17 @@ int main(int argc, char **argv)
 	int MovementDelay(SDL_GetTicks());
 
 	bool Wireframe(false);
-	bool Keys[4] =
+	bool Keys[8] =
 	{
 		false, /* Up arrow down? */
 		false, /* Down arrow down? */
 		false, /* Left arrow down? */
-		false  /* Right arrow down? */
+		false,  /* Right arrow down? */
+
+		false, /* W down? */
+		false, /* S down? */
+		false, /* A down? */
+		false  /* D down? */
 	};
 
 	/* Application loop. */
@@ -426,6 +549,11 @@ int main(int argc, char **argv)
 				if(event.key.keysym.sym == SDLK_DOWN)		Keys[1] = true;
 				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = true;
 				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = true;
+
+				if (event.key.keysym.sym == SDLK_w)			Keys[0] = true;
+				if (event.key.keysym.sym == SDLK_s)		Keys[1] = true;
+				if (event.key.keysym.sym == SDLK_a)		Keys[2] = true;
+				if (event.key.keysym.sym == SDLK_d)		Keys[3] = true;
 			}
 
 			else if(event.type == SDL_KEYUP)
@@ -434,14 +562,28 @@ int main(int argc, char **argv)
 				if(event.key.keysym.sym == SDLK_DOWN)		Keys[1] = false;
 				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = false;
 				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = false;
+
+				if (event.key.keysym.sym == SDLK_w)			Keys[0] = false;
+				if (event.key.keysym.sym == SDLK_s)		Keys[1] = false;
+				if (event.key.keysym.sym == SDLK_a)		Keys[2] = false;
+				if (event.key.keysym.sym == SDLK_d)		Keys[3] = false;
+			}
+			else if (event.type == SDL_MOUSEBUTTONDOWN) {
+				cout << "Hello";
+				init();
+				glPushMatrix();
+				mydisplay(-0.1f, 0.2f, -0.5f);
+				glPopMatrix();
+				cout << "Hello2";
 			}
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glPushMatrix();
-			DrawRoom();		
+			DrawRoom();	
 		glPopMatrix();
+
 
 		/* Move if the keys are pressed, this is explained in the tutorial. */
 		if(Keys[0])
