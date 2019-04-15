@@ -211,11 +211,6 @@ void CompileLists()
 
 //		glLoadIdentity();
 
-
-
-
-
-
 	glEndList();
 }
 
@@ -574,14 +569,7 @@ int main(int argc, char **argv)
 				if (event.key.keysym.sym == SDLK_q)		Keys[8] = false;
 				if (event.key.keysym.sym == SDLK_e)		Keys[9] = false;
 			}
-			else if (event.type == SDL_MOUSEBUTTONDOWN) {
-				cout << "Hello";
-				init();
-				glPushMatrix();
-				mydisplay(-0.1f, 0.2f, -0.5f);
-				glPopMatrix();
-				cout << "Hello2";
-			}
+
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
