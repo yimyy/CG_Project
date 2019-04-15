@@ -1,6 +1,6 @@
 ﻿  main.cpp
-c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(72): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(73): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
-c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(74): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(54): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(55): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
+c:\users\wuyiming\desktop\yiming\cg\cg_project\project\main.cpp(56): warning C4838: conversion from 'double' to 'GLfloat' requires a narrowing conversion
   Project.vcxproj -> C:\Users\wuyiming\Desktop\Yiming\CG\CG_Project\Debug\Project.exe
   Project.vcxproj -> C:\Users\wuyiming\Desktop\Yiming\CG\CG_Project\Debug\Project.pdb (Full PDB)

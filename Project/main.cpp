@@ -49,7 +49,7 @@ inline double DegreeToRadian(double degrees)
 void init()
 {
 	//light source
-	/*
+	
 	GLfloat light_position[] = { 0,50,-100,1 };
 	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
 	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
@@ -63,30 +63,44 @@ void init()
 
 	glClearColor(0.3, 0.4, 0.8, 0.1);
 	glShadeModel(GL_SMOOTH);
-	*/
+	
 
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat mat_shininess[] = { 50.0 };
+
+	/*
+//	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+//	GLfloat mat_shininess[] = { 50.0 };
 	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
 
+
 	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
-	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
-	GLfloat specular[] = { 1,0.6,0.6,1 };
+//	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
+//	GLfloat specular[] = { 1,0.6,0.6,1 };
+	GLfloat spot_direction[] = { -1.0, -1.0, 0.0 };
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glShadeModel(GL_SMOOTH);
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45.0);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
+//	glClearColor(0.0, 0.0, 0.0, 0.0);
+//	glShadeModel(GL_SMOOTH);
 
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+//	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+//	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+//	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-	glEnable(GL_LIGHTING);
+	
+
+//	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_SPOT_DIRECTION);
 	glEnable(GL_DEPTH_TEST);
+*/
+//	glEnable(GL_DEPTH_TEST); // enable depth testing, otherwise things will look really werid  
+//	glDepthFunc(GL_LEQUAL);
 }
 
 void mydisplay(float x, float y, float d, float rot_angle)
@@ -100,21 +114,32 @@ void mydisplay(float x, float y, float d, float rot_angle)
 //	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, tp_specular);
 
 	glPushMatrix();
+
 //	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glRotatef(rot_angle, 0.0, -1.0, 0.0);
+	glRotatef(rot_angle, 0.0, 0.0, 1.0);
 	glTranslatef(x,y,d);
-	GLUquadricObj *quadric = gluNewQuadric();
-	gluSphere(quadric, 0.1, 16, 16);
-	gluDeleteQuadric(quadric);
+
+	glEnable(GL_TEXTURE_2D);
+//	glBindTexture(GL_TEXTURE_2D, Textures[2]);
+
+
+
+	GLUquadric *quadratic = gluNewQuadric();
+	gluQuadricNormals(quadratic, GLU_SMOOTH);
+	gluQuadricTexture(quadratic, GL_TRUE);
+	//Render
+	glBindTexture(GL_TEXTURE_2D, Textures[3]);
+	gluSphere(quadratic, 0.1, 16, 16);
+
+//	GLUquadricObj *quadric = gluNewQuadric();
+//	gluSphere(quadric, 0.1, 16, 16);
+
+//	glBindTexture(GL_TEXTURE_2D, Textures[3]);
+	gluDeleteQuadric(quadratic);
+
 	glPopMatrix();
 }
-
-
-
-
-
-
 
 
 
@@ -392,12 +417,13 @@ void DrawRoom()
 		
 	glPopMatrix();
 	mydisplay(xsphere, ysphere, dsphere, r_angle);
+	
 
 
 	/*Time event*/
 
 	currentTime = SDL_GetTicks();
-	if (currentTime - startTime > 1000) {
+	if (currentTime - startTime > 100) {
 //		printf("Report: %d\n", variable);
 		r_angle += 1; 
 		startTime = currentTime;
@@ -483,6 +509,8 @@ int main(int argc, char **argv)
 	Textures[0] = GrabTexObjFromFile("Data/Wall.png");
 	Textures[1] = GrabTexObjFromFile("Data/Floor.png");
 	Textures[2] = GrabTexObjFromFile("Data/Box.png");			//Added!
+	Textures[3] = GrabTexObjFromFile("Data/Earth1.png");
+	Textures[4] = GrabTexObjFromFile("Data/Earth1.png");
 
 	//Replaced this with a loop that immediately checks the entire array.
 	//sizeof(Textures) is the size of the entire array in bytes (unsigned int = 4 bytes)
@@ -659,7 +687,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Delete the created textures. */
-	glDeleteTextures(3, Textures);		//Changed to 3.
+	glDeleteTextures(4, Textures);		//Changed to 3.
 	glDeleteLists(BoxList, 1);
 
 	/* Clean up. */
