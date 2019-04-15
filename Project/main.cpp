@@ -32,7 +32,7 @@ unsigned BoxList(0);					//Added!
 double X(0.0), Y(0.0), Z(0.0);
 double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
-float xsphere(-0.1f), ysphere(0.2f), dsphere(-0.5f);
+float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f);
 
 /*
  * DegreeToRadian
@@ -392,7 +392,7 @@ void DrawRoom()
 		
 	glPopMatrix();
 	mydisplay(xsphere, ysphere, dsphere);
-//	mydisplay(-0.1f, 0.2f, -0.5f);
+//	mydisplay(-0.1f, 0.1f, -0.5f);
 }
 
 /*
@@ -494,7 +494,7 @@ int main(int argc, char **argv)
 	int MovementDelay(SDL_GetTicks());
 
 	bool Wireframe(false);
-	bool Keys[8] =
+	bool Keys[10] =
 	{
 		false, /* Up arrow down? */
 		false, /* Down arrow down? */
@@ -504,7 +504,9 @@ int main(int argc, char **argv)
 		false, /* W down? */
 		false, /* S down? */
 		false, /* A down? */
-		false  /* D down? */
+		false,  /* D down? */
+		false, /* Q down? */
+		false  /* E down? */
 	};
 
 	/* Application loop. */
@@ -550,10 +552,12 @@ int main(int argc, char **argv)
 				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = true;
 				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = true;
 
-				if (event.key.keysym.sym == SDLK_w)			Keys[0] = true;
-				if (event.key.keysym.sym == SDLK_s)		Keys[1] = true;
-				if (event.key.keysym.sym == SDLK_a)		Keys[2] = true;
-				if (event.key.keysym.sym == SDLK_d)		Keys[3] = true;
+				if (event.key.keysym.sym == SDLK_w)			Keys[4] = true;
+				if (event.key.keysym.sym == SDLK_s)		Keys[5] = true;
+				if (event.key.keysym.sym == SDLK_a)		Keys[6] = true;
+				if (event.key.keysym.sym == SDLK_d)		Keys[7] = true;
+				if (event.key.keysym.sym == SDLK_q)		Keys[8] = true;
+				if (event.key.keysym.sym == SDLK_e)		Keys[9] = true;
 			}
 
 			else if(event.type == SDL_KEYUP)
@@ -563,10 +567,12 @@ int main(int argc, char **argv)
 				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = false;
 				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = false;
 
-				if (event.key.keysym.sym == SDLK_w)			Keys[0] = false;
-				if (event.key.keysym.sym == SDLK_s)		Keys[1] = false;
-				if (event.key.keysym.sym == SDLK_a)		Keys[2] = false;
-				if (event.key.keysym.sym == SDLK_d)		Keys[3] = false;
+				if (event.key.keysym.sym == SDLK_w)			Keys[4] = false;
+				if (event.key.keysym.sym == SDLK_s)		Keys[5] = false;
+				if (event.key.keysym.sym == SDLK_a)		Keys[6] = false;
+				if (event.key.keysym.sym == SDLK_d)		Keys[7] = false;
+				if (event.key.keysym.sym == SDLK_q)		Keys[8] = false;
+				if (event.key.keysym.sym == SDLK_e)		Keys[9] = false;
 			}
 			else if (event.type == SDL_MOUSEBUTTONDOWN) {
 				cout << "Hello";
@@ -608,6 +614,36 @@ int main(int argc, char **argv)
 		{
 			X -= cos(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
 			Z -= sin(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
+		}
+
+		if (Keys[4])
+		{
+			ysphere += 0.0005f;
+		}
+
+		if (Keys[5])
+		{
+			ysphere -= 0.0005f;
+		}
+
+		if (Keys[6])
+		{
+			xsphere -= 0.0005f;
+		}
+
+		if (Keys[7])
+		{
+			xsphere += 0.0005f;
+		}
+
+		if (Keys[8])
+		{
+			dsphere -= 0.005f;
+		}
+
+		if (Keys[9])
+		{
+			dsphere += 0.005f;
 		}
 
 		/* Swap the display buffers. */
