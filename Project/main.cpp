@@ -1,4 +1,6 @@
 /* Link the libraries code-wise. */
+#include <iostream>
+
 #ifdef _MSC_VER
 #	pragma comment(lib, "OpenGL32.lib")
 #	pragma comment(lib, "GLu32.lib")
@@ -11,9 +13,15 @@
 #include <string>
 #include <cmath>
 
+//#include <GL/gl.h>
+//#include <GL/glaux.h>
+//#include <GL/glu.h>
+#include <GL/glut.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #include <SDL/SDL_image.h>
+
+
 
 #define PI 3.141592653589793
 
@@ -297,8 +305,26 @@ void DrawRoom()
 	glPopMatrix();
 }
 
+bool check = true;
+
+void myMouseClick(int button, int state, int x, int y) {
+	//Left mouse && on pressed
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+		using std::cout;
+		using std::endl;
+
+		check = true;
+		cout << "Mouse click detected at coordinates x="
+			<< x << " and y=" << y << endl;
+	}
+}
+
 int main(int argc, char **argv)
 {
+
+	using std::cout;
+	using std::endl;
+
 	/* Initialize SDL and set up a window. */
 	SDL_Init(SDL_INIT_VIDEO);
 
