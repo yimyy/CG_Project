@@ -32,7 +32,7 @@ unsigned BoxList(0);					//Added!
 double X(0.0), Y(0.0), Z(0.0);
 double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
-float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f);
+float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f), r_angle(0);
 
 /*
  * DegreeToRadian
@@ -86,7 +86,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 }
 
-void mydisplay(float x, float y, float d)
+void mydisplay(float x, float y, float d, float rot_angle)
 {
 
 //	GLfloat tp_ambient[] = { 0.05,0.05,0.05,1 };
@@ -98,6 +98,8 @@ void mydisplay(float x, float y, float d)
 
 	glPushMatrix();
 //	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glRotatef(rot_angle, 0.0, -1.0, 0.0);
 	glTranslatef(x,y,d);
 	GLUquadricObj *quadric = gluNewQuadric();
 	gluSphere(quadric, 0.1, 16, 16);
@@ -386,7 +388,34 @@ void DrawRoom()
 		glPopMatrix();
 		
 	glPopMatrix();
-	mydisplay(xsphere, ysphere, dsphere);
+	mydisplay(xsphere, ysphere, dsphere, r_angle);
+
+
+	/*Time event*/
+
+	//Quit flag
+	bool quit = false;
+
+	//The timer starting time
+	Uint32 start = 0, currentTime;
+
+	//The timer start/stop flag
+	bool running = true;
+
+	int variable = 0;
+
+
+	currentTime = SDL_GetTicks();
+	if (currentTime - start > 1000) {
+//		printf("Report: %d\n", variable);
+		r_angle += 1;
+		start = currentTime;
+	}	
+
+
+
+
+
 //	mydisplay(-0.1f, 0.1f, -0.5f);
 }
 
