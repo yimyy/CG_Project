@@ -25,7 +25,7 @@
 
 #define PI 3.141592653589793
 
-unsigned Textures[4];
+unsigned Textures[8];
 unsigned BoxList(0);					//Added!
 
 										/* These will define the player's position and view angle. */
@@ -49,7 +49,6 @@ inline double DegreeToRadian(double degrees)
 void init()
 {
 	//light source
-
 	GLfloat light_position[] = { 0,50,-100,1 };
 	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
 	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
@@ -64,46 +63,9 @@ void init()
 	glClearColor(0.3, 0.4, 0.8, 0.1);
 	glShadeModel(GL_SMOOTH);
 
-
-
-	/*
-	//	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	//	GLfloat mat_shininess[] = { 50.0 };
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-
-
-	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
-	//	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
-	//	GLfloat specular[] = { 1,0.6,0.6,1 };
-	GLfloat spot_direction[] = { -1.0, -1.0, 0.0 };
-
-	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45.0);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
-	//	glClearColor(0.0, 0.0, 0.0, 0.0);
-	//	glShadeModel(GL_SMOOTH);
-
-	//	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	//	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-	//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-	//	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-
-
-
-	//	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_LIGHT1);
-	glEnable(GL_SPOT_DIRECTION);
-	glEnable(GL_DEPTH_TEST);
-	*/
-	//	glEnable(GL_DEPTH_TEST); // enable depth testing, otherwise things will look really werid  
-	//	glDepthFunc(GL_LEQUAL);
 }
 
-void mydisplay(float x, float y, float d, float rot_angle)
+void displayTransform(float x, float y, float d, float rot_angle)
 {
 	glPushMatrix();
 
@@ -116,19 +78,22 @@ void mydisplay(float x, float y, float d, float rot_angle)
 	gluQuadricNormals(quadratic, GLU_SMOOTH);
 	gluQuadricTexture(quadratic, GL_TRUE);
 	//Render
-	glBindTexture(GL_TEXTURE_2D, Textures[2]);
+	glBindTexture(GL_TEXTURE_2D, Textures[5]);
 	gluSphere(quadratic, 0.1, 16, 16);
 	gluDeleteQuadric(quadratic);
 	glPopMatrix();
 }
 
-void drawOval() {
+void drawFlamingo() {
 	//New quadric object
+	glEnable(GL_TEXTURE_2D);
 	GLUquadric *quadric2 = gluNewQuadric();    //In Jogl
-	gluQuadricTexture(quadric2, true);	//Turn on the texture mode for quadrics
-	GLUquadric *quadric3 = gluNewQuadric();    //In Jogl
-	gluQuadricTexture(quadric3, true);	//Turn on the texture mode for quadrics
-										//glu.gluNewQuadric(); (YOU DONT NEED THIS)
+//	gluQuadricTexture(quadric2, true);	//Turn on the texture mode for quadrics
+
+	gluQuadricNormals(quadric2, GLU_SMOOTH);
+	gluQuadricTexture(quadric2, GL_TRUE);
+	//Render
+	glBindTexture(GL_TEXTURE_2D, Textures[4]);
 
 	glPushMatrix();
 		glLoadIdentity();                 // Reset the model-view matrix
@@ -228,29 +193,9 @@ void drawOval() {
 				gluCylinder(quadric2, 1.5, 0.1, 3, 20, 20);
 			glPopMatrix();
 
-
 		glPopMatrix();
-
-
 	glPopMatrix();
-/*
-	glPushMatrix();
-		glLoadIdentity();                 // Reset the model-view matrix
-		glRotatef(ViewAngleVer, 1, 0, 0);
-		glRotatef(ViewAngleHor, 0, 1, 0);
-		glTranslated(-X, -Y, -Z);
-
-		glRotatef(90, 1, 0, 0);
-		glTranslatef(0.0, -1.0, 0.0);
-		glScalef(1.0, 0.8, 0.4);
-
-		gluSphere(quadric3, 0.5, 20, 20);
-	glPopMatrix();
-	*/
 }
-
-
-
 
 /*
 * GrabTexObjFromFile
@@ -345,8 +290,6 @@ void CompileLists()
 
 	glEnd();
 
-	//		glLoadIdentity();
-
 	glEndList();
 }
 
@@ -369,14 +312,14 @@ void DrawRoom()
 	if (!Once)
 	{
 		/* Bind the wall texture. */
-		glBindTexture(GL_TEXTURE_2D, Textures[0]);
+		glBindTexture(GL_TEXTURE_2D, Textures[6]);
 
 		/* Retrieve the width and height of the current texture (can also be done up front with SDL and saved somewhere). */
 		glGetTexLevelParameterfv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &WallTexWidth);
 		glGetTexLevelParameterfv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &WallTexHeight);
 
 		/* Bind the floor texture. */
-		glBindTexture(GL_TEXTURE_2D, Textures[1]);
+		glBindTexture(GL_TEXTURE_2D, Textures[6]);
 
 		/* Retrieve the width and height of the current texture (can also be done up front with SDL and saved somewhere). */
 		glGetTexLevelParameterfv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &FloorTexWidth);
@@ -400,7 +343,7 @@ void DrawRoom()
 
 
 	/* Draw walls. */
-	glBindTexture(GL_TEXTURE_2D, Textures[0]);
+	glBindTexture(GL_TEXTURE_2D, Textures[6]);
 
 	glBegin(GL_QUADS);
 	/* Wall in front of you when the app starts. */
@@ -457,7 +400,7 @@ void DrawRoom()
 	glEnd();
 
 	/* Draw the floor and the ceiling, this is done separatly because glBindTexture isn't allowed inside glBegin. */
-	glBindTexture(GL_TEXTURE_2D, Textures[1]);
+	glBindTexture(GL_TEXTURE_2D, Textures[6]);
 
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0);
@@ -489,10 +432,10 @@ void DrawRoom()
 	/* Now we're going to render some boxes using display lists. */
 	glPushMatrix();
 	/* Let's make it a bit smaller... */
-	glScaled(1, 0.4, 0.5);
+	glScaled(0.5, 0.4, 0.5);
 
 	/* Can't bind textures while generating a display list, but we can give it texture coordinates and bind it now. */
-	glBindTexture(GL_TEXTURE_2D, Textures[2]);
+	glBindTexture(GL_TEXTURE_2D, Textures[5]);
 
 	/*
 	* Because display lists have preset coordinates, we'll need to translate it to move it around. Note that we're
@@ -522,7 +465,6 @@ void DrawRoom()
 	glPopMatrix();
 	glPopMatrix();
 
-	//	mydisplay(0.05f, 0.05f, dsphere, r_angle);
 
 	/*Time event*/
 
@@ -534,22 +476,6 @@ void DrawRoom()
 	}
 
 }
-
-/*
-bool check = true;
-
-void myMouseClick(int button, int state, int x, int y) {
-//Left mouse && on pressed
-if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-using std::cout;
-using std::endl;
-
-check = true;
-cout << "Mouse click detected at coordinates x="
-<< x << " and y=" << y << endl;
-}
-}
-*/
 
 int main(int argc, char **argv)
 {
@@ -609,7 +535,11 @@ int main(int argc, char **argv)
 	Textures[1] = GrabTexObjFromFile("Data/Floor.png");
 	Textures[2] = GrabTexObjFromFile("Data/Box.png");			//Added!
 	Textures[3] = GrabTexObjFromFile("Data/Earth1.png");
-	Textures[4] = GrabTexObjFromFile("Data/Earth1.png");
+	Textures[4] = GrabTexObjFromFile("Data/pink.png");
+	Textures[5] = GrabTexObjFromFile("Data/water1.png");
+	Textures[6] = GrabTexObjFromFile("Data/green.png");
+	Textures[7] = GrabTexObjFromFile("Data/pink2.png");
+
 
 	//Replaced this with a loop that immediately checks the entire array.
 	//sizeof(Textures) is the size of the entire array in bytes (unsigned int = 4 bytes)
@@ -720,14 +650,12 @@ int main(int argc, char **argv)
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		 
 		glPushMatrix();
 		DrawRoom();
-		drawOval();
-//		mydisplay(xsphere, ysphere, dsphere, r_angle);
+		drawFlamingo();
+		displayTransform(xsphere, ysphere, dsphere, r_angle);
 		glPopMatrix();
-
-
 
 
 		/* Move if the keys are pressed, this is explained in the tutorial. */
@@ -790,7 +718,7 @@ int main(int argc, char **argv)
 	}
 
 	/* Delete the created textures. */
-	glDeleteTextures(4, Textures);		//Changed to 3.
+	glDeleteTextures(8, Textures);		//Changed to 3.
 	glDeleteLists(BoxList, 1);
 
 	/* Clean up. */
