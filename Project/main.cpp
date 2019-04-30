@@ -25,10 +25,10 @@
 
 #define PI 3.141592653589793
 
-unsigned Textures[3];
+unsigned Textures[4];
 unsigned BoxList(0);					//Added!
 
-/* These will define the player's position and view angle. */
+										/* These will define the player's position and view angle. */
 double X(0.0), Y(0.0), Z(0.0);
 double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
@@ -38,9 +38,9 @@ float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f), r_angle(0);
 Uint32 startTime = 0, currentTime;
 
 /*
- * DegreeToRadian
- *	Converts a specified amount of degrees to radians.
- */
+* DegreeToRadian
+*	Converts a specified amount of degrees to radians.
+*/
 inline double DegreeToRadian(double degrees)
 {
 	return (degrees / 180.f * PI);
@@ -49,7 +49,7 @@ inline double DegreeToRadian(double degrees)
 void init()
 {
 	//light source
-	
+
 	GLfloat light_position[] = { 0,50,-100,1 };
 	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
 	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
@@ -63,101 +63,167 @@ void init()
 
 	glClearColor(0.3, 0.4, 0.8, 0.1);
 	glShadeModel(GL_SMOOTH);
-	
+
 
 
 	/*
-//	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-//	GLfloat mat_shininess[] = { 50.0 };
+	//	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	//	GLfloat mat_shininess[] = { 50.0 };
 	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
 
 
 	GLfloat ambient[] = { 0.2,0.2,0.2,1 };
-//	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
-//	GLfloat specular[] = { 1,0.6,0.6,1 };
+	//	GLfloat diffuse[] = { 0.8,0.8,0.8,1 };
+	//	GLfloat specular[] = { 1,0.6,0.6,1 };
 	GLfloat spot_direction[] = { -1.0, -1.0, 0.0 };
 
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45.0);
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
 	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
-//	glClearColor(0.0, 0.0, 0.0, 0.0);
-//	glShadeModel(GL_SMOOTH);
+	//	glClearColor(0.0, 0.0, 0.0, 0.0);
+	//	glShadeModel(GL_SMOOTH);
 
-//	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-//	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	//	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	//	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-//	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+	//	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+	//	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
 
-	
 
-//	glEnable(GL_LIGHTING);
+
+	//	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 	glEnable(GL_SPOT_DIRECTION);
 	glEnable(GL_DEPTH_TEST);
-*/
-//	glEnable(GL_DEPTH_TEST); // enable depth testing, otherwise things will look really werid  
-//	glDepthFunc(GL_LEQUAL);
+	*/
+	//	glEnable(GL_DEPTH_TEST); // enable depth testing, otherwise things will look really werid  
+	//	glDepthFunc(GL_LEQUAL);
 }
 
 void mydisplay(float x, float y, float d, float rot_angle)
 {
-
-//	GLfloat tp_ambient[] = { 0.05,0.05,0.05,1 };
-//	GLfloat tp_diffuse[] = { 0.7,0.3,1,1 };
-//	GLfloat tp_specular[] = { 0.6,0.6,0.6,1 };
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, tp_ambient);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, tp_diffuse);
-//	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, tp_specular);
-
 	glPushMatrix();
 
-//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glRotatef(rot_angle, 0.0, 0.0, 1.0);
-	glTranslatef(x,y,d);
+	glTranslatef(x, y, d);
 
 	glEnable(GL_TEXTURE_2D);
-//	glBindTexture(GL_TEXTURE_2D, Textures[2]);
-
-
 
 	GLUquadric *quadratic = gluNewQuadric();
 	gluQuadricNormals(quadratic, GLU_SMOOTH);
 	gluQuadricTexture(quadratic, GL_TRUE);
 	//Render
-	glBindTexture(GL_TEXTURE_2D, Textures[3]);
+	glBindTexture(GL_TEXTURE_2D, Textures[2]);
 	gluSphere(quadratic, 0.1, 16, 16);
-
-//	GLUquadricObj *quadric = gluNewQuadric();
-//	gluSphere(quadric, 0.1, 16, 16);
-
-//	glBindTexture(GL_TEXTURE_2D, Textures[3]);
 	gluDeleteQuadric(quadratic);
+	glPopMatrix();
+}
+
+void drawOval() {
+	//New quadric object
+	GLUquadric *quadric2 = gluNewQuadric();    //In Jogl
+	gluQuadricTexture(quadric2, true);	//Turn on the texture mode for quadrics
+	GLUquadric *quadric3 = gluNewQuadric();    //In Jogl
+	gluQuadricTexture(quadric3, true);	//Turn on the texture mode for quadrics
+										//glu.gluNewQuadric(); (YOU DONT NEED THIS)
+
+	glPushMatrix();
+		glLoadIdentity();                 // Reset the model-view matrix
+		glRotatef(ViewAngleVer, 1, 0, 0);
+		glRotatef(ViewAngleHor, 0, 1, 0);
+		glTranslated(-X, -Y, -Z);
+
+		glPushMatrix();
+			glRotatef(90, 1, 0, 0);
+			glTranslatef(0.0, -1.0, 0.0);
+			glScalef(0.2, 0.1, 0.1);
+			//Body
+			gluSphere(quadric2, 0.5, 20, 20);
+			
+			//Neck 1
+			glPushMatrix();
+				glTranslatef(-0.5f, 0.0f, -0.9f);
+				glRotatef(15.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.5, 0.5, 12, 20, 20);
+			glPopMatrix();
+
+			//Leg 1
+			glPushMatrix();                       
+												 
+				glTranslatef(-0.05f, 0.0f, 0.1f);
+				glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
+
+			glPopMatrix();
+
+			glPushMatrix();                       
+												  
+				glTranslatef(0.05f, 0.0f, 1.3f);            
+				glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);        
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
+
+			glPopMatrix();
+
+			//Leg 2
+			glPushMatrix();
+
+			glTranslatef(-0.05f, 0.0f, 0.1f);
+			glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
+			glScalef(0.1, 0.1, 0.1);
+			gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
+
+			glPopMatrix();
+
+			glPushMatrix();
+
+			glTranslatef(0.05f, 0.0f, 1.3f);
+			glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);
+			glScalef(0.1, 0.1, 0.1);
+			gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
+
+			glPopMatrix();
+
+		glPopMatrix();
+
 
 	glPopMatrix();
+/*
+	glPushMatrix();
+		glLoadIdentity();                 // Reset the model-view matrix
+		glRotatef(ViewAngleVer, 1, 0, 0);
+		glRotatef(ViewAngleHor, 0, 1, 0);
+		glTranslated(-X, -Y, -Z);
+
+		glRotatef(90, 1, 0, 0);
+		glTranslatef(0.0, -1.0, 0.0);
+		glScalef(1.0, 0.8, 0.4);
+
+		gluSphere(quadric3, 0.5, 20, 20);
+	glPopMatrix();
+	*/
 }
 
 
 
 
-
-
 /*
- * GrabTexObjFromFile
- *	This function will use SDL to load the specified image, create an OpenGL
- *	texture object from it and return the texture object number.
- */
+* GrabTexObjFromFile
+*	This function will use SDL to load the specified image, create an OpenGL
+*	texture object from it and return the texture object number.
+*/
 GLuint GrabTexObjFromFile(const std::string& fileName)
 {
 	/* Use SDL_image to load the PNG image. */
 	SDL_Surface *Image = IMG_Load(fileName.c_str());
-	
+
 	/* Image doesn't exist or failed loading? Return 0. */
-	if(!Image)
+	if (!Image)
 		return 0;
 
 	unsigned Object(0);
@@ -176,7 +242,7 @@ GLuint GrabTexObjFromFile(const std::string& fileName)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); //NEW!
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); //NEW!
 
-	/* Create the actual texture object. */
+																  /* Create the actual texture object. */
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Image->w, Image->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, Image->pixels);
 
 	/* Free the surface, we are finished with it. */
@@ -186,68 +252,68 @@ GLuint GrabTexObjFromFile(const std::string& fileName)
 }
 
 /*
- *	CompileLists
- *		Compiles the display lists used by our application.
- */
+*	CompileLists
+*		Compiles the display lists used by our application.
+*/
 void CompileLists()
 {
 	/* Let's generate a display list for a box. */
 	BoxList = glGenLists(1);
 	glNewList(BoxList, GL_COMPILE);
 
-		/*
-		 * Render everything as you usually would, without texture binding. We're rendering the box from the
-		 * '3D Objects' tutorial here.
-		 */
-		glBegin(GL_QUADS);
-			/* Front */
-			glTexCoord2d(0, 0); glVertex3d(400, 125, 0.4);
-			glTexCoord2d(1, 0); glVertex3d(750, 125, 0.4);
-			glTexCoord2d(1, 1); glVertex3d(750, 475, 0.4);
-			glTexCoord2d(0, 1); glVertex3d(400, 475, 0.4);
+	/*
+	* Render everything as you usually would, without texture binding. We're rendering the box from the
+	* '3D Objects' tutorial here.
+	*/
+	glBegin(GL_QUADS);
+	/* Front */
+	glTexCoord2d(0, 0); glVertex3d(400, 125, 0.4);
+	glTexCoord2d(1, 0); glVertex3d(750, 125, 0.4);
+	glTexCoord2d(1, 1); glVertex3d(750, 475, 0.4);
+	glTexCoord2d(0, 1); glVertex3d(400, 475, 0.4);
 
-			/* Left side */
-			glTexCoord2d(0, 0); glVertex3d(400, 125, -0.4);
-			glTexCoord2d(1, 0); glVertex3d(400, 125, 0.4);
-			glTexCoord2d(1, 1); glVertex3d(400, 475, 0.4);
-			glTexCoord2d(0, 1); glVertex3d(400, 475, -0.4);
+	/* Left side */
+	glTexCoord2d(0, 0); glVertex3d(400, 125, -0.4);
+	glTexCoord2d(1, 0); glVertex3d(400, 125, 0.4);
+	glTexCoord2d(1, 1); glVertex3d(400, 475, 0.4);
+	glTexCoord2d(0, 1); glVertex3d(400, 475, -0.4);
 
-			/* Back */
-			glTexCoord2d(0, 0); glVertex3d(750, 125, -0.4);
-			glTexCoord2d(1, 0); glVertex3d(400, 125, -0.4);
-			glTexCoord2d(1, 1); glVertex3d(400, 475, -0.4);
-			glTexCoord2d(0, 1); glVertex3d(750, 475, -0.4);
+	/* Back */
+	glTexCoord2d(0, 0); glVertex3d(750, 125, -0.4);
+	glTexCoord2d(1, 0); glVertex3d(400, 125, -0.4);
+	glTexCoord2d(1, 1); glVertex3d(400, 475, -0.4);
+	glTexCoord2d(0, 1); glVertex3d(750, 475, -0.4);
 
-			/* Right side */
-			glTexCoord2d(0, 0); glVertex3d(750, 125, 0.4);
-			glTexCoord2d(1, 0); glVertex3d(750, 125, -0.4);
-			glTexCoord2d(1, 1); glVertex3d(750, 475, -0.4);
-			glTexCoord2d(0, 1); glVertex3d(750, 475, 0.4);
+	/* Right side */
+	glTexCoord2d(0, 0); glVertex3d(750, 125, 0.4);
+	glTexCoord2d(1, 0); glVertex3d(750, 125, -0.4);
+	glTexCoord2d(1, 1); glVertex3d(750, 475, -0.4);
+	glTexCoord2d(0, 1); glVertex3d(750, 475, 0.4);
 
-			/* Top */
-			glTexCoord2d(0, 0); glVertex3d(400, 125, -0.4);
-			glTexCoord2d(1, 0); glVertex3d(750, 125, -0.4);
-			glTexCoord2d(1, 1); glVertex3d(750, 125, 0.4);
-			glTexCoord2d(0, 1); glVertex3d(400, 125, 0.4);
+	/* Top */
+	glTexCoord2d(0, 0); glVertex3d(400, 125, -0.4);
+	glTexCoord2d(1, 0); glVertex3d(750, 125, -0.4);
+	glTexCoord2d(1, 1); glVertex3d(750, 125, 0.4);
+	glTexCoord2d(0, 1); glVertex3d(400, 125, 0.4);
 
-			/* Bottom */
-			glTexCoord2d(0, 0); glVertex3d(400, 475, -0.4);
-			glTexCoord2d(1, 0); glVertex3d(750, 475, -0.4);
-			glTexCoord2d(1, 1); glVertex3d(750, 475, 0.4);
-			glTexCoord2d(0, 1); glVertex3d(400, 475, 0.4);
+	/* Bottom */
+	glTexCoord2d(0, 0); glVertex3d(400, 475, -0.4);
+	glTexCoord2d(1, 0); glVertex3d(750, 475, -0.4);
+	glTexCoord2d(1, 1); glVertex3d(750, 475, 0.4);
+	glTexCoord2d(0, 1); glVertex3d(400, 475, 0.4);
 
 
-		glEnd();
+	glEnd();
 
-//		glLoadIdentity();
+	//		glLoadIdentity();
 
 	glEndList();
 }
 
 /*
- * DrawRoom
- *	This will render the entire scene (in other words, draw the room).
- */
+* DrawRoom
+*	This will render the entire scene (in other words, draw the room).
+*/
 void DrawRoom()
 {
 	/* You also could do this at front by using the SDL surface's values or in an array. */
@@ -260,7 +326,7 @@ void DrawRoom()
 	static bool Once(false);
 
 	/* Perform this check only once. */
-	if(!Once)
+	if (!Once)
 	{
 		/* Bind the wall texture. */
 		glBindTexture(GL_TEXTURE_2D, Textures[0]);
@@ -281,174 +347,167 @@ void DrawRoom()
 
 	glPushMatrix();
 
-		/* Move the world and rotate the view. */
-		glRotated(ViewAngleVer, 1, 0, 0);
-		glRotated(ViewAngleHor, 0, 1, 0);
+	/* Move the world and rotate the view. */
+	glRotated(ViewAngleVer, 1, 0, 0);
+	glRotated(ViewAngleHor, 0, 1, 0);
 
-		glTranslated(-X, -Y, -Z);
+	glTranslated(-X, -Y, -Z);
 
-		/* Set the coordinate system. */
-		glOrtho(0, 800, 600, 0, -1, 1);
+	/* Set the coordinate system. */
+	glOrtho(0, 800, 600, 0, -1, 1);
 
-		init();
-		
+	init();
 
-		/* Draw walls. */
-		glBindTexture(GL_TEXTURE_2D, Textures[0]);
 
-		glBegin(GL_QUADS);
-			/* Wall in front of you when the app starts. */
-			glTexCoord2f(0, 0);
-			glVertex3d(-200,   0, 4.0);
+	/* Draw walls. */
+	glBindTexture(GL_TEXTURE_2D, Textures[0]);
 
-			glTexCoord2f(1200.f / WallTexWidth, 0);
-			glVertex3d(1000,   0, 4.0);
+	glBegin(GL_QUADS);
+	/* Wall in front of you when the app starts. */
+	glTexCoord2f(0, 0);
+	glVertex3d(-200, 0, 4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
-			glVertex3d(1000, 500, 4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 0);
+	glVertex3d(1000, 0, 4.0);
 
-			glTexCoord2f(0, 400.f / WallTexHeight);
-			glVertex3d(-200, 500, 4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
+	glVertex3d(1000, 500, 4.0);
 
-			/* Wall left of you. */
-			glTexCoord2f(0, 0);
-			glVertex3d(-200,   0,-4.0);
+	glTexCoord2f(0, 400.f / WallTexHeight);
+	glVertex3d(-200, 500, 4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 0);
-			glVertex3d(-200,   0, 4.0);
+	/* Wall left of you. */
+	glTexCoord2f(0, 0);
+	glVertex3d(-200, 0, -4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
-			glVertex3d(-200, 500, 4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 0);
+	glVertex3d(-200, 0, 4.0);
 
-			glTexCoord2f(0, 400.f / WallTexHeight);
-			glVertex3d(-200, 500,-4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
+	glVertex3d(-200, 500, 4.0);
 
-			/* Wall right of you. */
-			glTexCoord2f(0, 0);
-			glVertex3d(1000, 0, 4.0);
+	glTexCoord2f(0, 400.f / WallTexHeight);
+	glVertex3d(-200, 500, -4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 0);
-			glVertex3d(1000, 0,-4.0);
+	/* Wall right of you. */
+	glTexCoord2f(0, 0);
+	glVertex3d(1000, 0, 4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
-			glVertex3d(1000, 500,-4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 0);
+	glVertex3d(1000, 0, -4.0);
 
-			glTexCoord2f(0, 400.f / WallTexHeight);
-			glVertex3d(1000, 500, 4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
+	glVertex3d(1000, 500, -4.0);
 
-			/* Wall behind you (you won't be able to see this just yet, but you will later). */
-			glTexCoord2f(0, 0);
-			glVertex3d(1000, 0,-4.0);
+	glTexCoord2f(0, 400.f / WallTexHeight);
+	glVertex3d(1000, 500, 4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 0);
-			glVertex3d(-200, 0,-4.0);
+	/* Wall behind you (you won't be able to see this just yet, but you will later). */
+	glTexCoord2f(0, 0);
+	glVertex3d(1000, 0, -4.0);
 
-			glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
-			glVertex3d(-200, 500,-4.0);
+	glTexCoord2f(1200.f / WallTexWidth, 0);
+	glVertex3d(-200, 0, -4.0);
 
-			glTexCoord2f(0, 400.f / WallTexHeight);
-			glVertex3d(1000, 500,-4.0);
-		glEnd();
+	glTexCoord2f(1200.f / WallTexWidth, 400.f / WallTexHeight);
+	glVertex3d(-200, 500, -4.0);
 
-		/* Draw the floor and the ceiling, this is done separatly because glBindTexture isn't allowed inside glBegin. */
-		glBindTexture(GL_TEXTURE_2D, Textures[1]);
+	glTexCoord2f(0, 400.f / WallTexHeight);
+	glVertex3d(1000, 500, -4.0);
+	glEnd();
 
-		glBegin(GL_QUADS);
-			glTexCoord2f(0, 0);
-			glVertex3d(-200, 500, 4.0);
+	/* Draw the floor and the ceiling, this is done separatly because glBindTexture isn't allowed inside glBegin. */
+	glBindTexture(GL_TEXTURE_2D, Textures[1]);
 
-			glTexCoord2f(1200.f / FloorTexWidth, 0);
-			glVertex3d(1000, 500, 4.0);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0);
+	glVertex3d(-200, 500, 4.0);
 
-			glTexCoord2f(1200.f / FloorTexWidth, (8.f / 2.f * 600.f) / FloorTexHeight);
-			glVertex3d(1000, 500,-4.0);
+	glTexCoord2f(1200.f / FloorTexWidth, 0);
+	glVertex3d(1000, 500, 4.0);
 
-			glTexCoord2f(0, (8.f / 2.f * 600.f) / FloorTexHeight);
-			glVertex3d(-200, 500,-4.0);
+	glTexCoord2f(1200.f / FloorTexWidth, (8.f / 2.f * 600.f) / FloorTexHeight);
+	glVertex3d(1000, 500, -4.0);
 
-			/* Ceiling. */
-			glTexCoord2f(0, 0);
-			glVertex3d(-200, 0, 4.0);
+	glTexCoord2f(0, (8.f / 2.f * 600.f) / FloorTexHeight);
+	glVertex3d(-200, 500, -4.0);
 
-			glTexCoord2f(1200.f / FloorTexWidth, 0);
-			glVertex3d(1000, 0, 4.0);
+	/* Ceiling. */
+	glTexCoord2f(0, 0);
+	glVertex3d(-200, 0, 4.0);
 
-			glTexCoord2f(1200.f / FloorTexWidth, (8.f / 2.f * 600.f) / FloorTexHeight);
-			glVertex3d(1000, 0,-4.0);
+	glTexCoord2f(1200.f / FloorTexWidth, 0);
+	glVertex3d(1000, 0, 4.0);
 
-			glTexCoord2f(0, (8.f / 2.f * 600.f)  / FloorTexHeight);
-			glVertex3d(-200, 0,-4.0);
-		glEnd();
+	glTexCoord2f(1200.f / FloorTexWidth, (8.f / 2.f * 600.f) / FloorTexHeight);
+	glVertex3d(1000, 0, -4.0);
 
-		/* Now we're going to render some boxes using display lists. */
-		glPushMatrix();
-			/* Let's make it a bit smaller... */
-			glScaled(1, 0.4, 0.5);
+	glTexCoord2f(0, (8.f / 2.f * 600.f) / FloorTexHeight);
+	glVertex3d(-200, 0, -4.0);
+	glEnd();
 
-			/* Can't bind textures while generating a display list, but we can give it texture coordinates and bind it now. */
-			glBindTexture(GL_TEXTURE_2D, Textures[2]);
+	/* Now we're going to render some boxes using display lists. */
+	glPushMatrix();
+	/* Let's make it a bit smaller... */
+	glScaled(1, 0.4, 0.5);
 
-			/*
-			 * Because display lists have preset coordinates, we'll need to translate it to move it around. Note that we're
-			 * moving the small version of the cube around, not the big version (because we scaled *before* translating).
-			 */
-			glTranslated(-700, 750, 6);
+	/* Can't bind textures while generating a display list, but we can give it texture coordinates and bind it now. */
+	glBindTexture(GL_TEXTURE_2D, Textures[2]);
 
-			/*
-			 * Let's draw a whole lot of boxes. Note that because we're not pushing and popping matrices, translations
-			 * and changes will 'accumulate' and add to the previous translation.
-			 */
-			for(short i(0); i < 12; ++i)
-			{
-				glTranslated(350, 0, 0);
+	/*
+	* Because display lists have preset coordinates, we'll need to translate it to move it around. Note that we're
+	* moving the small version of the cube around, not the big version (because we scaled *before* translating).
+	*/
+	glTranslated(-700, 750, 6);
 
-				/* These make sure that every once in a while, a new row is started. */
-				if(i == 5)		glTranslated(-1575, -350, 0);
-				if(i == 9)		glTranslated(-1225, -350, 0);
+	/*
+	* Let's draw a whole lot of boxes. Note that because we're not pushing and popping matrices, translations
+	* and changes will 'accumulate' and add to the previous translation.
+	*/
+	for (short i(0); i < 12; ++i)
+	{
+		glTranslated(350, 0, 0);
 
-				/*
-				 * glCallList is all that is really needed to execute the display list. Remember to try the 'K' button
-				 * to turn on wireframe mode, with these extra polygons, it looks pretty neat!
-				 */
-				glCallList(BoxList);
-			}
-			
-		glPopMatrix();
-		
+		/* These make sure that every once in a while, a new row is started. */
+		if (i == 5)		glTranslated(-1575, -350, 0);
+		if (i == 9)		glTranslated(-1225, -350, 0);
+
+		/*
+		* glCallList is all that is really needed to execute the display list. Remember to try the 'K' button
+		* to turn on wireframe mode, with these extra polygons, it looks pretty neat!
+		*/
+		glCallList(BoxList);
+	}
+
 	glPopMatrix();
-	mydisplay(xsphere, ysphere, dsphere, r_angle);
-	
+	glPopMatrix();
 
+	//	mydisplay(0.05f, 0.05f, dsphere, r_angle);
 
 	/*Time event*/
 
 	currentTime = SDL_GetTicks();
 	if (currentTime - startTime > 100) {
-//		printf("Report: %d\n", variable);
-		r_angle += 1; 
+		//		printf("Report: %d\n", variable);
+		r_angle += 1;
 		startTime = currentTime;
-	}	
+	}
 
-
-
-
-
-//	mydisplay(-0.1f, 0.1f, -0.5f);
 }
 
 /*
 bool check = true;
 
 void myMouseClick(int button, int state, int x, int y) {
-	//Left mouse && on pressed
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		using std::cout;
-		using std::endl;
+//Left mouse && on pressed
+if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+using std::cout;
+using std::endl;
 
-		check = true;
-		cout << "Mouse click detected at coordinates x="
-			<< x << " and y=" << y << endl;
-	}
+check = true;
+cout << "Mouse click detected at coordinates x="
+<< x << " and y=" << y << endl;
+}
 }
 */
 
@@ -485,14 +544,14 @@ int main(int argc, char **argv)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	gluPerspective(80.0, 800.0/600.0, 0.1, 100.0);
+	gluPerspective(80.0, 800.0 / 600.0, 0.1, 100.0);
 
 	/* We now switch to the modelview matrix. */
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	glEnable(GL_DEPTH_TEST);
-	
+
 	glDepthFunc(GL_LEQUAL);
 
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -516,15 +575,15 @@ int main(int argc, char **argv)
 	//sizeof(Textures) is the size of the entire array in bytes (unsigned int = 4 bytes)
 	//so sizeof(Textures) would give 3 * 4 = 12 bytes, divide this by 4 bytes and you
 	//have 3.
-	for(unsigned i(0); i < sizeof(Textures) / sizeof(unsigned); ++i)
+	for (unsigned i(0); i < sizeof(Textures) / sizeof(unsigned); ++i)
 	{
-		if(Textures[i] == 0)
+		if (Textures[i] == 0)
 		{
 #ifdef _WIN32
-		MessageBoxA(0, "Something went seriously wrong!", "Fatal Error!", MB_OK | MB_ICONERROR);
+			MessageBoxA(0, "Something went seriously wrong!", "Fatal Error!", MB_OK | MB_ICONERROR);
 #endif //_WIN32
 
-		return 1;
+			return 1;
 		}
 	}
 
@@ -553,16 +612,16 @@ int main(int argc, char **argv)
 	};
 
 	/* Application loop. */
-	for(;;)
+	for (;;)
 	{
 		/* Handle events with SDL. */
-		if(SDL_PollEvent(&event))
+		if (SDL_PollEvent(&event))
 		{
-			if(event.type == SDL_QUIT)
+			if (event.type == SDL_QUIT)
 				break;
 
 			/* Mouse events? */
-			else if(event.type == SDL_MOUSEMOTION)
+			else if (event.type == SDL_MOUSEMOTION)
 			{
 				/* Get the relative mouse movement of the mouse (based on CurMouseCoord - PrevMouseCoord). */
 				SDL_GetRelativeMouseState(&RelX, &RelY);
@@ -571,29 +630,29 @@ int main(int argc, char **argv)
 				ViewAngleVer += RelY / 4;
 
 				/* Prevent the horizontal angle from going over 360 degrees or below 0 degrees. */
-				if(ViewAngleHor >= 360.0)		ViewAngleHor = 0.0;
-				else if(ViewAngleHor < 0.0)		ViewAngleHor = 360.0;
+				if (ViewAngleHor >= 360.0)		ViewAngleHor = 0.0;
+				else if (ViewAngleHor < 0.0)		ViewAngleHor = 360.0;
 
 				/* Prevent the vertical view from moving too far (comment this out to get a funny effect). */
-				if(ViewAngleVer > 60.0)			ViewAngleVer = 60.0; /* 60 degrees is when you're looking down. */
-				else if(ViewAngleVer < -60.0)	ViewAngleVer = -60.0; /* This is when you're looking up. */
+				if (ViewAngleVer > 60.0)			ViewAngleVer = 60.0; /* 60 degrees is when you're looking down. */
+				else if (ViewAngleVer < -60.0)	ViewAngleVer = -60.0; /* This is when you're looking up. */
 
-				/* This delay might seem strange, but it helps smoothing out the mouse if you're experiencing jittering. */
+																	  /* This delay might seem strange, but it helps smoothing out the mouse if you're experiencing jittering. */
 				SDL_Delay(5);
 			}
 
-			else if(event.type == SDL_KEYDOWN)
+			else if (event.type == SDL_KEYDOWN)
 			{
-				if(event.key.keysym.sym == SDLK_ESCAPE)
+				if (event.key.keysym.sym == SDLK_ESCAPE)
 					break;
 
-				if(event.key.keysym.sym == SDLK_k)
-					glPolygonMode(GL_FRONT_AND_BACK, ((Wireframe = !Wireframe)? GL_LINE : GL_FILL));
+				if (event.key.keysym.sym == SDLK_k)
+					glPolygonMode(GL_FRONT_AND_BACK, ((Wireframe = !Wireframe) ? GL_LINE : GL_FILL));
 
-				if(event.key.keysym.sym == SDLK_UP)			Keys[0] = true;
-				if(event.key.keysym.sym == SDLK_DOWN)		Keys[1] = true;
-				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = true;
-				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = true;
+				if (event.key.keysym.sym == SDLK_UP)			Keys[0] = true;
+				if (event.key.keysym.sym == SDLK_DOWN)		Keys[1] = true;
+				if (event.key.keysym.sym == SDLK_LEFT)		Keys[2] = true;
+				if (event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = true;
 
 				if (event.key.keysym.sym == SDLK_w)			Keys[4] = true;
 				if (event.key.keysym.sym == SDLK_s)		Keys[5] = true;
@@ -603,12 +662,12 @@ int main(int argc, char **argv)
 				if (event.key.keysym.sym == SDLK_e)		Keys[9] = true;
 			}
 
-			else if(event.type == SDL_KEYUP)
+			else if (event.type == SDL_KEYUP)
 			{
-				if(event.key.keysym.sym == SDLK_UP)			Keys[0] = false;
-				if(event.key.keysym.sym == SDLK_DOWN)		Keys[1] = false;
-				if(event.key.keysym.sym == SDLK_LEFT)		Keys[2] = false;
-				if(event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = false;
+				if (event.key.keysym.sym == SDLK_UP)			Keys[0] = false;
+				if (event.key.keysym.sym == SDLK_DOWN)		Keys[1] = false;
+				if (event.key.keysym.sym == SDLK_LEFT)		Keys[2] = false;
+				if (event.key.keysym.sym == SDLK_RIGHT)		Keys[3] = false;
 
 				if (event.key.keysym.sym == SDLK_w)			Keys[4] = false;
 				if (event.key.keysym.sym == SDLK_s)		Keys[5] = false;
@@ -623,30 +682,34 @@ int main(int argc, char **argv)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glPushMatrix();
-			DrawRoom();	
+		DrawRoom();
+		drawOval();
+//		mydisplay(xsphere, ysphere, dsphere, r_angle);
 		glPopMatrix();
 
 
+
+
 		/* Move if the keys are pressed, this is explained in the tutorial. */
-		if(Keys[0])
+		if (Keys[0])
 		{
 			X -= cos(DegreeToRadian(ViewAngleHor + 90.0)) * 0.05;
 			Z -= sin(DegreeToRadian(ViewAngleHor + 90.0)) * 0.05;
 		}
 
-		if(Keys[1])
+		if (Keys[1])
 		{
 			X += cos(DegreeToRadian(ViewAngleHor + 90.0)) * 0.05;
 			Z += sin(DegreeToRadian(ViewAngleHor + 90.0)) * 0.05;
 		}
 
-		if(Keys[2])
+		if (Keys[2])
 		{
 			X += cos(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
 			Z += sin(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
 		}
 
-		if(Keys[3])
+		if (Keys[3])
 		{
 			X -= cos(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
 			Z -= sin(DegreeToRadian(ViewAngleHor + 180.0)) * 0.05;
