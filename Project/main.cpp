@@ -140,15 +140,46 @@ void drawOval() {
 			glRotatef(90, 1, 0, 0);
 			glTranslatef(0.0, -1.0, 0.0);
 			glScalef(0.2, 0.1, 0.1);
+
 			//Body
 			gluSphere(quadric2, 0.5, 20, 20);
 			
-			//Neck 1
+			//Neck
 			glPushMatrix();
 				glTranslatef(-0.5f, 0.0f, -0.9f);
-				glRotatef(15.f, 0.0f, 1.0f, 0.0f);
+				glRotatef(10.f, 0.0f, 1.0f, 0.0f);
 				glScalef(0.1, 0.1, 0.1);
-				gluCylinder(quadric2, 0.5, 0.5, 12, 20, 20);
+				gluCylinder(quadric2, 0.6, 1, 8, 20, 20);
+			glPopMatrix();
+
+			glPushMatrix();
+				glTranslatef(-0.43f, 0.0f, -1.2f);
+				glRotatef(-10.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.5, 0.6, 4, 20, 20);
+			glPopMatrix();
+
+			glPushMatrix();
+				glTranslatef(-0.43f, 0.0f, -1.5f);
+				glRotatef(-0.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.4, 0.5, 4, 20, 20);
+			glPopMatrix();
+
+			//Head
+			glPushMatrix();
+				glTranslatef(-0.5f, 0.0f, -1.4f);
+				glRotatef(10.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.2, 0.2, 0.2);
+				gluSphere(quadric2, 0.6, 20, 20);
+			glPopMatrix();
+
+			//Mouth
+			glPushMatrix();
+				glTranslatef(-0.65f, 0.0f, -1.4f);
+				glRotatef(130.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.1, 0.1, 0.1);
+				gluCylinder(quadric2, 0.4, 0.5, 3, 20, 20);
 			glPopMatrix();
 
 			//Leg 1
@@ -163,7 +194,7 @@ void drawOval() {
 
 			glPushMatrix();                       
 												  
-				glTranslatef(0.05f, 0.0f, 1.3f);            
+				glTranslatef(0.05f, 0.0f, 1.2f);            
 				glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);        
 				glScalef(0.1, 0.1, 0.1);
 				gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
@@ -173,8 +204,8 @@ void drawOval() {
 			//Leg 2
 			glPushMatrix();
 
-			glTranslatef(-0.05f, 0.0f, 0.1f);
-			glRotatef(5.0f, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-0.07f, 0.0f, 0.1f);
+			glRotatef(2.0f, 0.0f, 1.0f, 0.0f);
 			glScalef(0.1, 0.1, 0.1);
 			gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
 
@@ -182,12 +213,21 @@ void drawOval() {
 
 			glPushMatrix();
 
-			glTranslatef(0.05f, 0.0f, 1.3f);
-			glRotatef(-10.0f, 0.0f, 1.0f, 0.0f);
+			glTranslatef(-0.02f, 0.0f, 1.2f);
+			glRotatef(1.0f, 0.0f, 1.0f, 0.0f);
 			glScalef(0.1, 0.1, 0.1);
 			gluCylinder(quadric2, 0.3, 0.3, 12, 20, 20);
 
 			glPopMatrix();
+
+			//Tail
+			glPushMatrix();
+				glTranslatef(0.2f, 0.0f, -0.0f);
+				glRotatef(40.f, 0.0f, 1.0f, 0.0f);
+				glScalef(0.2, 0.2, 0.2);
+				gluCylinder(quadric2, 1.5, 0.1, 3, 20, 20);
+			glPopMatrix();
+
 
 		glPopMatrix();
 
