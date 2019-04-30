@@ -32,7 +32,7 @@ unsigned BoxList(0);					//Added!
 double X(0.0), Y(0.0), Z(0.0);
 double ViewAngleHor(0.0), ViewAngleVer(0.0);
 
-float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f), r_angle(0);
+float xsphere(0.0f), ysphere(0.0f), dsphere(-0.5f), rotation_angle(0);
 
 //The timer starting time
 Uint32 startTime = 0, currentTime;
@@ -62,15 +62,13 @@ void init()
 
 	glClearColor(0.3, 0.4, 0.8, 0.1);
 	glShadeModel(GL_SMOOTH);
-
 }
 
 void displayTransform(float x, float y, float d, float rot_angle)
 {
 	glPushMatrix();
-
-	glRotatef(rot_angle, 0.0, 0.0, 1.0);
 	glTranslatef(x, y, d);
+	glRotatef(rot_angle, 0.0, 0.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -469,12 +467,10 @@ void DrawRoom()
 	/*Time event*/
 
 	currentTime = SDL_GetTicks();
-	if (currentTime - startTime > 100) {
-		//		printf("Report: %d\n", variable);
-		r_angle += 1;
+	if (currentTime - startTime > 50) {
+		rotation_angle += 1;
 		startTime = currentTime;
 	}
-
 }
 
 int main(int argc, char **argv)
@@ -654,7 +650,7 @@ int main(int argc, char **argv)
 		glPushMatrix();
 		DrawRoom();
 		drawFlamingo();
-		displayTransform(xsphere, ysphere, dsphere, r_angle);
+		displayTransform(xsphere, ysphere, dsphere, rotation_angle);
 		glPopMatrix();
 
 
